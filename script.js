@@ -19,6 +19,7 @@ new Vue({
   },
   mounted() {
     this.cardNumberTemp = this.otherCardMask;
+    document.getElementById("cardNumber").focus();
   },
   created() {},
   computed: {
