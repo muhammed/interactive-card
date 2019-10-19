@@ -115,8 +115,6 @@ body {
 }
 .card-item__focus.-active {
   opacity: 1;
-  width: 370px;
-  height: 45px;
 }
 .card-item__side {
   border-radius: 15px;
