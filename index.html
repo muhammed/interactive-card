@@ -15,8 +15,10 @@
       <div class="card-list">
         <div class="card-item" v-bind:class="{ '-active' : isCardFlipped }">
           <div class="card-item__side -front">
+            <div class="card-item__focus" v-bind:class="{'-active' : focusElementStyle }" v-bind:style="focusElementStyle" ref="focusElement"></div>
             <div class="card-item__cover">
-              <img v-bind:src="'./images/' + currentCardBackground + '.jpeg'" class="card-item__bg">
+              <img
+              v-bind:src="'./images/' + currentCardBackground + '.jpeg'" class="card-item__bg">
             </div>
             <div class="card-item__wrapper">
               <div class="card-item__top">
@@ -27,32 +29,35 @@
                   </transition>
                 </div>
               </div>
-              <div class="card-item__number" v-if="getCardType === 'amex'">
-                <span v-for="(n, $index) in amexCardMask" v-bind:key="$index">
-                  <transition name="slide-fade-up">
-                    <div class="card-item__numberItem" v-if="cardNumber.length > $index" key="1">
-                      {{cardNumber[$index]}}
-                    </div>
-                    <div class="card-item__numberItem" v-else key="2">
-                      {{n}}
-                    </div>
-                  </transition>
-                </span>
-              </div>
-              <div class="card-item__number" v-else>
-                <span v-for="(n, $index) in otherCardMask" v-bind:key="$index">
-                  <transition name="slide-fade-up">
-                    <div class="card-item__numberItem" v-if="cardNumber.length > $index" key="1">
-                      {{cardNumber[$index]}}
-                    </div>
-                    <div class="card-item__numberItem" v-else key="2">
-                      {{n}}
-                    </div>
-                  </transition>
-                </span>
-              </div>
+              <label for="cardNumber" class="card-item__number" ref="cardNumber">
+                <template v-if="getCardType === 'amex'">
+                  <span v-for="(n, $index) in amexCardMask" v-bind:key="$index">
+                    <transition name="slide-fade-up">
+                      <div class="card-item__numberItem" v-bind:class="{ '-active' : n.trim() === '' }" v-if="cardNumber.length > $index" key="1">
+                        {{cardNumber[$index]}}
+                      </div>
+                      <div class="card-item__numberItem" v-bind:class="{ '-active' : n.trim() === '' }" v-else key="2">
+                        {{n}}
+                      </div>
+                    </transition>
+                  </span>
+                </template>
+
+                <template v-else>
+                  <span v-for="(n, $index) in otherCardMask" v-bind:key="$index">
+                    <transition name="slide-fade-up">
+                      <div class="card-item__numberItem" v-bind:class="{ '-active' : n.trim() === '' }" v-if="cardNumber.length > $index" key="1">
+                        {{cardNumber[$index]}}
+                      </div>
+                      <div class="card-item__numberItem" v-bind:class="{ '-active' : n.trim() === '' }" v-else key="2">
+                        {{n}}
+                      </div>
+                    </transition>
+                  </span>
+                </template>
+              </label>
               <div class="card-item__content">
-                <div class="card-item__info">
+                <label for="cardName" class="card-item__info" ref="cardName">
                   <div class="card-item__holder">Card Holder</div>
                   <transition name="slide-fade-up">
                     <div class="card-item__name" v-if="cardName.length" key="1">
@@ -62,22 +67,22 @@
                     </div>
                     <div class="card-item__name" v-else key="2">Ad Soyad</div>
                   </transition>
-                </div>
-                <div class="card-item__date">
-                  <div class="card-item__dateTitle">Expires</div>
-                  <div class="card-item__dateItem">
+                </label>
+                <div class="card-item__date" ref="cardDate">
+                  <label for="cardMonth" class="card-item__dateTitle">Expires</label>
+                  <label for="cardMonth" class="card-item__dateItem">
                     <transition name="slide-fade-up">
                       <span v-if="cardMonth" v-bind:key="cardMonth">{{cardMonth}}</span>
                       <span v-else key="2">MM</span>
                     </transition>
-                  </div>
+                  </label>
                   /
-                  <div class="card-item__dateItem">
+                  <label for="cardYear" class="card-item__dateItem">
                     <transition name="slide-fade-up">
                       <span v-if="cardYear" v-bind:key="cardYear">{{String(cardYear).slice(2,4)}}</span>
                       <span v-else key="2">YY</span>
                     </transition>
-                  </div>
+                  </label>
                 </div>
               </div>
             </div>
@@ -96,24 +101,24 @@
       </div>
       <div class="card-form__inner">
         <div class="card-input">
-          <div class="card-input__label">Card Name</div>
-          <input type="text" class="card-input__input" v-model="cardName" autocomplete="off">
+          <label for="cardName" class="card-input__label">Card Name</label>
+          <input type="text" id="cardName" class="card-input__input" v-model="cardName" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardName" autocomplete="off">
         </div>
         <div class="card-input">
-          <div class="card-input__label">Card Number</div>
-          <input type="text" class="card-input__input" v-mask="generateCardNumberMask" v-model="cardNumber" autocomplete="off">
+          <label for="cardNumber" class="card-input__label">Card Number</label>
+          <input type="text" id="cardNumber" class="card-input__input" v-mask="generateCardNumberMask" v-model="cardNumber" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardNumber" autocomplete="off">
         </div>
         <div class="card-form__row">
           <div class="card-form__col">
             <div class="card-form__group">
               <div class="card-input__label">Expiration Date</div>
-              <select class="card-input__input" v-model="cardMonth">
+              <select class="card-input__input" id="cardMonth" v-model="cardMonth" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardDate">
                 <option value="" disabled selected>Month</option>
                 <option v-bind:value="n < 10 ? '0' + n : n" v-for="n in 12" v-bind:disabled="n < minCardMonth" v-bind:key="n">
                     {{n < 10 ? '0' + n : n}}
                 </option>
               </select>
-              <select class="card-input__input" v-model="cardYear">
+              <select class="card-input__input" id="cardYear" v-model="cardYear" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardDate">
                 <option value="" disabled selected>Year</option>
                 <option v-bind:value="$index + minCardYear" v-for="(n, $index) in 12" v-bind:key="n">
                     {{$index + minCardYear}}

@@ -13,6 +13,7 @@ new Vue({
       otherCardMask: "#### #### #### ####",
       cardNumberTemp: "",
       isCardFlipped: false,
+      focusElementStyle: null
     };
   },
   mounted() {
@@ -54,6 +55,18 @@ new Vue({
   methods: {
     flipCard (status) {
       this.isCardFlipped = status;
+    },
+    focusInput (e) {
+      let targetRef = e.target.dataset.ref;
+      let target = this.$refs[targetRef];
+      this.focusElementStyle = {
+        width: `${target.offsetWidth}px`,
+        height: `${target.offsetHeight}px`,
+        transform: `translateX(${target.offsetLeft}px) translateY(${target.offsetTop}px)`
+      }
+    },
+    blurInput() {
+      this.focusElementStyle = null;
     }
   }
 });

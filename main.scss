@@ -88,7 +88,7 @@ body {
   position: relative;
   z-index: 2;
 
-  &.-active, &:hover {
+  &.-active {
     .card-item__side {
       &.-front {
         transform: perspective(1000px) rotateY(180deg) rotateX(0deg)
@@ -98,6 +98,41 @@ body {
         transform: perspective(1000px) rotateY(0) rotateX(0deg) rotateZ(0deg);
         box-shadow: 0 20px 50px 0 rgba(81, 88, 206, 0.65);
       }
+    }
+  }
+
+  &__focus {
+    position: absolute;
+    z-index: 3;
+    border-radius: 5px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.35s cubic-bezier(0.71, 0.03, 0.56, 0.85);
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.65);
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgb(8, 20, 47);
+      height: 100%;
+      border-radius: 5px;
+      filter: blur(25px);
+      opacity: 0.5;
+  }
+
+    &.-active {
+      opacity: 1;
+
+      width: 370px;
+      height: 45px;
     }
   }
 
@@ -121,7 +156,12 @@ body {
       z-index: 2;
       padding: 0;
       background-color: #2364d2;
-      background-image: linear-gradient(43deg, #4158D0 0%, #8555c7 46%, #2364d2 100%);
+      background-image: linear-gradient(
+        43deg,
+        #4158d0 0%,
+        #8555c7 46%,
+        #2364d2 100%
+      );
       height: 100%;
     }
   }
@@ -148,32 +188,16 @@ body {
       top: 0;
       width: 100%;
       height: 100%;
-      background: rgba(6, 2, 29, 0.35);
+      background: rgba(6, 2, 29, 0.45);
     }
-  }
-  &__wrapper {
-    position: relative;
-    z-index: 2;
-    // pointer-events: none;
-    // user-select: none;
-  }
-  &__number {
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 1;
-    color: #fff;
-    width: 100%;
-  }
-  &__numberItem {
-    width: 12px;
-    display: inline-block;
   }
 
   &__top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 45px;
+    margin-bottom: 40px;
+    padding: 0 10px;
   }
 
   &__chip {
@@ -199,7 +223,10 @@ body {
   &__info {
     color: #fff;
     width: 100%;
-    max-width: calc(100% - 65px);
+    max-width: calc(100% - 85px);
+    padding: 10px 15px;
+    font-weight: 500;
+    display: block;
   }
 
   &__holder {
@@ -210,8 +237,12 @@ body {
 
   &__wrapper {
     font-family: "Source Code Pro", monospace;
-
-    padding: 30px 25px;
+    padding: 25px 15px;
+    position: relative;
+    z-index: 4;
+    height: 100%;
+    text-shadow: 7px 6px 10px rgba(14, 42, 90, 0.8);
+    user-select: none;
   }
 
   &__name {
@@ -222,7 +253,6 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     text-transform: uppercase;
-    padding-right: 10px;
   }
   &__nameItem {
     display: inline-block;
@@ -231,12 +261,21 @@ body {
   }
 
   &__number {
+    font-weight: 500;
+    line-height: 1;
+    color: #fff;
     font-size: 27px;
-    margin-bottom: 40px;
+    margin-bottom: 35px;
+    display: inline-block;
+    padding: 10px 15px;
   }
 
   &__numberItem {
     width: 16px;
+    display: inline-block;
+    &.-active {
+      width: 30px;
+    }
   }
 
   &__content {
@@ -246,11 +285,14 @@ body {
   }
 
   &__date {
-    display: flex;
     flex-wrap: wrap;
     font-size: 18px;
     margin-left: auto;
-    flex: 1;
+    padding: 10px;
+    display: inline-flex;
+    width: 80px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   &__dateItem {
@@ -316,6 +358,7 @@ body {
     font-weight: 500;
     color: #1a3b5d;
     width: 100%;
+    display: block;
   }
   &__input {
     width: 100%;
@@ -372,11 +415,11 @@ body {
 }
 .slide-fade-right-enter {
   opacity: 0;
-  transform: translateX(7px) rotate(25deg);
+  transform: translateX(10px) rotate(45deg);
   pointer-events: none;
 }
 .slide-fade-right-leave-to {
   opacity: 0;
-  transform: translateX(-7px) rotate(25deg);
+  transform: translateX(-10px) rotate(45deg);
   pointer-events: none;
 }
