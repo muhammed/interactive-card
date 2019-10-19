@@ -14,7 +14,7 @@ body {
 .wrapper {
   min-height: 100vh;
   display: flex;
-  padding: 50px 30px;
+  padding: 50px 15px;
 }
 
 .card-form {
@@ -22,30 +22,60 @@ body {
   margin: auto;
   width: 100%;
 
+  @media screen and (max-width: 576px) {
+    margin: 0 auto;
+  }
+
   &__inner {
-    min-height: 500px;
     background: #fff;
     // box-shadow: 3px 13px 30px 0px rgba(21, 34, 67, 0.2);
     box-shadow: 0 30px 60px 0 rgba(90, 116, 148, 0.4);
     border-radius: 10px;
     padding: 35px;
     padding-top: 180px;
+
+    @media screen and (max-width: 480px) {
+      padding: 25px;
+      padding-top: 165px;
+    }
+    @media screen and (max-width: 360px) {
+      padding: 15px;
+      padding-top: 165px;
+    }
   }
 
   &__row {
     display: flex;
     align-items: flex-start;
+    @media screen and (max-width: 480px) {
+      flex-wrap: wrap;
+    }
   }
 
   &__col {
     flex: auto;
     margin-right: 35px;
+
     &:last-child {
       margin-right: 0;
     }
 
+    @media screen and (max-width: 480px) {
+      margin-right: 0;
+      flex: unset;
+      width: 100%;
+      margin-bottom: 20px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
     &.-cvv {
       max-width: 150px;
+      @media screen and (max-width: 480px) {
+        max-width: initial;
+      }
     }
   }
 
@@ -77,16 +107,31 @@ body {
     color: #fff;
     margin-top: 20px;
     cursor: pointer;
+
+    @media screen and (max-width: 480px) {
+      margin-top: 10px;
+    }
   }
 }
 
 .card-item {
-  width: 430px;
+  max-width: 430px;
   height: 270px;
   margin-left: auto;
   margin-right: auto;
   position: relative;
   z-index: 2;
+  width: 100%;
+
+  @media screen and (max-width: 480px) {
+    max-width: 310px;
+    height: 220px;
+    width: 90%;
+  }
+
+  @media screen and (max-width: 360px) {
+    height: 180px;
+  }
 
   &.-active {
     .card-item__side {
@@ -116,7 +161,7 @@ body {
     border: 2px solid rgba(255, 255, 255, 0.65);
 
     &:after {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
@@ -126,7 +171,7 @@ body {
       border-radius: 5px;
       filter: blur(25px);
       opacity: 0.5;
-  }
+    }
 
     &.-active {
       opacity: 1;
@@ -168,6 +213,7 @@ body {
     max-height: 100%;
     height: 100%;
     width: 100%;
+    object-fit: cover;
   }
   &__cover {
     height: 100%;
@@ -195,10 +241,23 @@ body {
     justify-content: space-between;
     margin-bottom: 40px;
     padding: 0 10px;
+
+    @media screen and (max-width: 480px) {
+      margin-bottom: 25px;
+    }
+    @media screen and (max-width: 360px) {
+      margin-bottom: 15px;
+    }
   }
 
   &__chip {
     width: 60px;
+    @media screen and (max-width: 480px) {
+      width: 50px;
+    }
+    @media screen and (max-width: 360px) {
+      width: 40px;
+    }
   }
 
   &__type {
@@ -208,6 +267,14 @@ body {
     justify-content: flex-end;
     max-width: 100px;
     margin-left: auto;
+
+    @media screen and (max-width: 480px) {
+      height: 40px;
+      max-width: 90px;
+    }
+    @media screen and (max-width: 360px) {
+      height: 30px;
+    }
   }
 
   &__typeImg {
@@ -224,12 +291,22 @@ body {
     padding: 10px 15px;
     font-weight: 500;
     display: block;
+
+    cursor: pointer;
+
+    @media screen and (max-width: 480px) {
+      padding: 10px;
+    }
   }
 
   &__holder {
     opacity: 0.7;
     font-size: 13px;
     margin-bottom: 6px;
+    @media screen and (max-width: 480px) {
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
   }
 
   &__wrapper {
@@ -240,6 +317,9 @@ body {
     height: 100%;
     text-shadow: 7px 6px 10px rgba(14, 42, 90, 0.8);
     user-select: none;
+    @media screen and (max-width: 480px) {
+      padding: 20px 10px;
+    }
   }
 
   &__name {
@@ -250,6 +330,9 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     text-transform: uppercase;
+    @media screen and (max-width: 480px) {
+      font-size: 16px;
+    }
   }
   &__nameItem {
     display: inline-block;
@@ -265,6 +348,19 @@ body {
     margin-bottom: 35px;
     display: inline-block;
     padding: 10px 15px;
+    cursor: pointer;
+
+    @media screen and (max-width: 480px) {
+      font-size: 21px;
+      margin-bottom: 15px;
+      padding: 10px 10px;
+    }
+
+    @media screen and (max-width: 360px) {
+      font-size: 19px;
+      margin-bottom: 10px;
+      padding: 10px 10px;
+    }
   }
 
   &__numberItem {
@@ -272,6 +368,22 @@ body {
     display: inline-block;
     &.-active {
       width: 30px;
+    }
+
+    @media screen and (max-width: 480px) {
+      width: 13px;
+
+      &.-active {
+        width: 16px;
+      }
+    }
+
+    @media screen and (max-width: 360px) {
+      width: 12px;
+
+      &.-active {
+        width: 8px;
+      }
     }
   }
 
@@ -290,6 +402,11 @@ body {
     width: 80px;
     white-space: nowrap;
     flex-shrink: 0;
+    cursor: pointer;
+
+    @media screen and (max-width: 480px) {
+      font-size: 16px;
+    }
   }
 
   &__dateItem {
@@ -305,6 +422,11 @@ body {
     font-size: 13px;
     padding-bottom: 6px;
     width: 100%;
+
+    @media screen and (max-width: 480px) {
+      font-size: 12px;
+      padding-bottom: 5px;
+    }
   }
   &__band {
     background: rgba(15, 47, 88, 0.7);
@@ -345,6 +467,10 @@ body {
 
 .card-list {
   margin-bottom: -130px;
+
+  @media screen and (max-width: 480px) {
+    margin-bottom: -120px;
+  }
 }
 
 .card-input {
