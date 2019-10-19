@@ -319,6 +319,7 @@ body {
   color: #1a3b5d;
   width: 100%;
   display: block;
+  user-select: none;
 }
 .card-input__input {
   width: 100%;

@@ -111,7 +111,7 @@
         <div class="card-form__row">
           <div class="card-form__col">
             <div class="card-form__group">
-              <div class="card-input__label">Expiration Date</div>
+              <label for="cardMonth" class="card-input__label">Expiration Date</label>
               <select class="card-input__input" id="cardMonth" v-model="cardMonth" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardDate">
                 <option value="" disabled selected>Month</option>
                 <option v-bind:value="n < 10 ? '0' + n : n" v-for="n in 12" v-bind:disabled="n < minCardMonth" v-bind:key="n">
@@ -128,8 +128,8 @@
           </div>
           <div class="card-form__col -cvv">
             <div class="card-input">
-              <div class="card-input__label">CVV</div>
-              <input type="text" class="card-input__input" v-mask="'####'" maxlength="4" v-model="cardCvv" v-on:focus="flipCard(true)" v-on:blur="flipCard(false)" autocomplete="off">
+              <label for="cardCvv" class="card-input__label">CVV</label>
+              <input type="text" class="card-input__input" id="cardCvv" v-mask="'####'" maxlength="4" v-model="cardCvv" v-on:focus="flipCard(true)" v-on:blur="flipCard(false)" autocomplete="off">
             </div>
           </div>
         </div>

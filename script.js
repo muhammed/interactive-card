@@ -13,7 +13,8 @@ new Vue({
       otherCardMask: "#### #### #### ####",
       cardNumberTemp: "",
       isCardFlipped: false,
-      focusElementStyle: null
+      focusElementStyle: null,
+      isInputFocused: false
     };
   },
   mounted() {
@@ -57,6 +58,7 @@ new Vue({
       this.isCardFlipped = status;
     },
     focusInput (e) {
+      this.isInputFocused = true;
       let targetRef = e.target.dataset.ref;
       let target = this.$refs[targetRef];
       this.focusElementStyle = {
@@ -66,7 +68,13 @@ new Vue({
       }
     },
     blurInput() {
-      this.focusElementStyle = null;
+      let vm = this;
+      setTimeout(() => {
+        if (!vm.isInputFocused) {
+          vm.focusElementStyle = null;
+        }
+      }, 300);
+      vm.isInputFocused = false;
     }
   }
 });
