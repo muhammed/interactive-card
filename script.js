@@ -21,7 +21,6 @@ new Vue({
     this.cardNumberTemp = this.otherCardMask;
     document.getElementById("cardNumber").focus();
   },
-  created() {},
   computed: {
     getCardType () {
       let number = this.cardNumber;
@@ -37,7 +36,7 @@ new Vue({
       re = new RegExp("^6011");
       if (number.match(re) != null) return "discover";
 
-      return "visa";
+      return "visa"; // default type
     },
 		generateCardNumberMask () {
 			return this.getCardType === "amex" ? this.amexCardMask : this.otherCardMask;

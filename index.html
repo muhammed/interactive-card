@@ -88,6 +88,10 @@
             </div>
           </div>
           <div class="card-item__side -back">
+            <div class="card-item__cover">
+              <img
+              v-bind:src="'./images/' + currentCardBackground + '.jpeg'" class="card-item__bg">
+            </div>
             <div class="card-item__band"></div>
             <div class="card-item__cvv">
                 <div class="card-item__cvvTitle">CVV</div>
@@ -101,12 +105,12 @@
       </div>
       <div class="card-form__inner">
         <div class="card-input">
-          <label for="cardName" class="card-input__label">Card Name</label>
-          <input type="text" id="cardName" class="card-input__input" v-model="cardName" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardName" autocomplete="off">
-        </div>
-        <div class="card-input">
           <label for="cardNumber" class="card-input__label">Card Number</label>
           <input type="text" id="cardNumber" class="card-input__input" v-mask="generateCardNumberMask" v-model="cardNumber" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardNumber" autocomplete="off">
+        </div>
+        <div class="card-input">
+          <label for="cardName" class="card-input__label">Card Name</label>
+          <input type="text" id="cardName" class="card-input__input" v-model="cardName" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardName" autocomplete="off">
         </div>
         <div class="card-form__row">
           <div class="card-form__col">
