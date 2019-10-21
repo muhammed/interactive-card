@@ -431,6 +431,17 @@ body {
   position: relative;
   z-index: 2;
 }
+@media screen and (max-width: 480px) {
+  .card-item__band {
+    margin-top: 20px;
+  }
+}
+@media screen and (max-width: 360px) {
+  .card-item__band {
+    height: 40px;
+    margin-top: 10px;
+  }
+}
 .card-item__cvv {
   text-align: right;
   position: relative;
@@ -439,6 +450,11 @@ body {
 }
 .card-item__cvv .card-item__type {
   opacity: 0.7;
+}
+@media screen and (max-width: 360px) {
+  .card-item__cvv {
+    padding: 10px 15px;
+  }
 }
 .card-item__cvvTitle {
   padding-right: 10px;
@@ -460,6 +476,17 @@ body {
   font-size: 18px;
   border-radius: 4px;
   box-shadow: 0px 10px 20px -7px rgba(32, 56, 117, 0.35);
+}
+@media screen and (max-width: 480px) {
+  .card-item__cvvBand {
+    height: 40px;
+    margin-bottom: 20px;
+  }
+}
+@media screen and (max-width: 360px) {
+  .card-item__cvvBand {
+    margin-bottom: 15px;
+  }
 }
 
 .card-list {
