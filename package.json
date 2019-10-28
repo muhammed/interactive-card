@@ -1,5 +1,5 @@
 {
-  "name": "paycard",
+  "name": "vue-interactive-paycard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
