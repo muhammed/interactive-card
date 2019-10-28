@@ -37,15 +37,18 @@
               <transition name="slide-fade-up">
                 <div
                   class="card-item__numberItem"
+                  v-if="$index > 4 && $index < 14 && cardNumber.length > $index && n.trim() !== ''"
+                >*</div>
+                <div class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
-                  v-if="cardNumber.length > $index"
-                  key="1"
-                >{{cardNumber[$index]}}</div>
+                  :key="$index" v-else-if="cardNumber.length > $index">
+                  {{cardNumber[$index]}}
+                </div>
                 <div
                   class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
                   v-else
-                  key="2"
+                  :key="$index + 1"
                 >{{n}}</div>
               </transition>
             </span>
@@ -60,14 +63,14 @@
                 >*</div>
                 <div class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
-                  key="1" v-else-if="cardNumber.length > $index">
+                  :key="$index" v-else-if="cardNumber.length > $index">
                   {{cardNumber[$index]}}
                 </div>
                 <div
                   class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
                   v-else
-                  key="2"
+                  :key="$index + 1"
                 >{{n}}</div>
               </transition>
             </span>
