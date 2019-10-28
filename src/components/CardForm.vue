@@ -159,6 +159,9 @@ export default {
       re = new RegExp('^62')
       if (number.match(re) != null) return 'unionpay'
 
+      re = new RegExp('^9792')
+      if (number.match(re) != null) return 'troy'
+
       return 'visa' // default type
     },
     generateCardNumberMask () {
