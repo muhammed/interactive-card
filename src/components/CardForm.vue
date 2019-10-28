@@ -82,7 +82,7 @@
           <div class="card-input">
             <label for="cardCvv" class="card-input__label">CVV</label>
             <input
-              type="text"
+              type="tel"
               class="card-input__input"
               @focus="focusField(fields.cardCvv)"
               v-mask="'####'"
