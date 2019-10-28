@@ -35,7 +35,10 @@ new Vue({
 
       re = new RegExp("^6011");
       if (number.match(re) != null) return "discover";
-
+      
+      re = new RegExp("^62");
+      if (number.match(re) != null) return "unionpay";
+      
       return "visa"; // default type
     },
 		generateCardNumberMask () {
