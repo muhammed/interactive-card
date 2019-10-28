@@ -1,10 +1,21 @@
-# Created by https://www.gitignore.io/api/sass
-# Edit at https://www.gitignore.io/?templates=sass
+.DS_Store
+node_modules
+/dist
 
-### Sass ###
-.sass-cache/
-*.css.map
-*.sass.map
-*.scss.map
+# local env files
+.env.local
+.env.*.local
 
-# End of https://www.gitignore.io/api/sass
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
