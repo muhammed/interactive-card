@@ -2,7 +2,6 @@
   <div class="card-form">
     <div class="card-list">
       <Card
-        :cardType="getCardType"
         :amexCardMask="amexCardMask"
         :otherCardMask="otherCardMask"
         :cardNumber="cardNumber"
