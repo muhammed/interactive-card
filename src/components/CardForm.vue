@@ -32,6 +32,7 @@
         <input
           type="text"
           :id="fields.cardName"
+          v-letter-only
           @input="changeName"
           class="card-input__input"
           :value="cardNameModel"
@@ -102,7 +103,20 @@ import { mask } from 'vue-the-mask'
 import Card from '@/components/Card'
 export default {
   name: 'CardForm',
-  directives: { mask },
+  directives: {
+    'mask': mask,
+    'letter-only': {
+      bind (el) {
+        function checkValue (event) {
+          if (event.charCode >= 48 && event.charCode <= 57) {
+            event.preventDefault()
+          }
+          return true
+        }
+        el.addEventListener('keypress', checkValue)
+      }
+    }
+  },
   props: {
     cardNumber: [String, Number],
     cardName: String,
