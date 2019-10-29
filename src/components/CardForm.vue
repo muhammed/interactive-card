@@ -3,18 +3,19 @@
     <div class="card-list">
       <Card
         :amexCardMask="amexCardMask"
-        :otherCardMask="otherCardMask"
+        :defaultCardMask="defaultCardMask"
         :cardNumber="cardNumber"
         :cardName="cardName"
         :cardMonth="cardMonth"
         :cardYear="cardYear"
         :cardCvv="cardCvv"
         :fields="fields"
+        isCardNumberMasked
       />
     </div>
     <div class="card-form__inner">
       <div class="card-input">
-        <label for="cardNumber" class="card-input__label">Card Number</label>
+        <label for="cardNumber" class="card-input__label">Card Number {{cardNumberDummy}}</label>
         <input
           type="text"
           :id="fields.cardNumber"
@@ -126,7 +127,7 @@ export default {
       cardCvvModel: this.cardCvv,
       minCardYear: new Date().getFullYear(),
       amexCardMask: '#### ###### #####',
-      otherCardMask: '#### #### #### ####',
+      defaultCardMask: '#### #### #### ####',
       cardNumberTemp: '',
       fields: {
         cardNumber: 'cardNumber',
@@ -134,11 +135,12 @@ export default {
         cardMonth: 'cardMonth',
         cardYear: 'cardYear',
         cardCvv: 'cardCvv'
-      }
+      },
+      cardNumberDummy: ''
     }
   },
   mounted () {
-    this.cardNumberTemp = this.otherCardMask
+    this.cardNumberTemp = this.defaultCardMask
   },
   computed: {
     getCardType () {
@@ -164,7 +166,7 @@ export default {
       return 'visa' // default type
     },
     generateCardNumberMask () {
-      return this.getCardType === 'amex' ? this.amexCardMask : this.otherCardMask
+      return this.getCardType === 'amex' ? this.amexCardMask : this.defaultCardMask
     },
     minCardMonth () {
       if (this.cardYear === this.minCardYear) return new Date().getMonth() + 1
