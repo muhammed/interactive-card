@@ -153,9 +153,6 @@ export default {
     },
     cardType () {
       this.changePlaceholder()
-    },
-    cardNumber () {
-      this.changeFocus()
     }
   },
   mounted () {
@@ -241,6 +238,9 @@ export default {
       } else {
         this.currentPlaceholder = this.defaultCardPlaceholder
       }
+      this.$nextTick(() => {
+        this.changeFocus()
+      })
     }
   }
 }
