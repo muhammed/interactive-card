@@ -93,7 +93,7 @@
         </div>
       </div>
 
-      <button class="card-form__button">Submit</button>
+      <button class="card-form__button" v-on:click="invaildCard">Submit</button>
     </div>
   </div>
 </template>
@@ -172,7 +172,7 @@ export default {
       re = new RegExp('^9792')
       if (number.match(re) != null) return 'troy'
 
-      return 'visa' // default type
+      return '' // default type
     },
     generateCardNumberMask () {
       return this.getCardType === 'amex' ? this.amexCardMask : this.defaultCardMask
@@ -210,6 +210,33 @@ export default {
     changeCvv (e) {
       this.cardCvvModel = e.target.value
       this.$emit('update:cardCvv', this.cardCvvModel)
+<<<<<<< HEAD
+=======
+    },
+    focusField (field) {
+      console.log(field)
+    },
+    invaildCard () {
+      let number = this.cardNumber
+      let sum = 0
+      let isOdd = true
+      for (let i = number.length - 1; i >= 0; i--) {
+        let num = number.charAt(i)
+        if (isOdd) {
+          sum += num
+        } else {
+          num = num * 2
+          if (num > 9) {
+            num = num.toString().split('').join('+')
+          }
+          sum += num
+        }
+        isOdd = !isOdd
+      }
+      if (sum % 10 !== 0) {
+        alert('invaild card number')
+      }
+>>>>>>> fa193a33d208c44546972ccb2781c5e69b7a1895
     }
   }
 }
