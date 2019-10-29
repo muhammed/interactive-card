@@ -19,11 +19,10 @@
         <input
           type="text"
           :id="fields.cardNumber"
-          @focus="focusField(fields.cardNumber)"
           v-mask="generateCardNumberMask"
           @input="changeNumber"
           class="card-input__input"
-          v-model="cardNumberModel"
+          :value="cardNumberModel"
           data-card-field
           autocomplete="off"
         />
@@ -33,10 +32,9 @@
         <input
           type="text"
           :id="fields.cardName"
-          @focus="focusField(fields.cardName)"
           @input="changeName"
           class="card-input__input"
-          v-model="cardNameModel"
+          :value="cardNameModel"
           data-card-field
           autocomplete="off"
         />
@@ -47,7 +45,6 @@
             <label for="cardMonth" class="card-input__label">Expiration Date</label>
             <select
               class="card-input__input -select"
-              @focus="focusField(fields.cardMonth)"
               :id="fields.cardMonth"
               v-model="cardMonthModel"
               @change="changeMonth"
@@ -63,7 +60,6 @@
             </select>
             <select
               class="card-input__input -select"
-              @focus="focusField(fields.cardYear)"
               :id="fields.cardYear"
               v-model="cardYearModel"
               @change="changeYear"
@@ -84,11 +80,10 @@
             <input
               type="tel"
               class="card-input__input"
-              @focus="focusField(fields.cardCvv)"
               v-mask="'####'"
               :id="fields.cardCvv"
               maxlength="4"
-              v-model="cardCvvModel"
+              :value="cardCvvModel"
               @input="changeCvv"
               data-card-field
               autocomplete="off"
@@ -184,10 +179,12 @@ export default {
     generateMonthValue (n) {
       return n < 10 ? `0${n}` : n
     },
-    changeName () {
+    changeName (e) {
+      this.cardNameModel = e.target.value
       this.$emit('update:cardName', this.cardNameModel)
     },
-    changeNumber () {
+    changeNumber (e) {
+      this.cardNumberModel = e.target.value
       this.$emit('update:cardNumber', this.cardNumberModel)
     },
     changeMonth () {
@@ -196,11 +193,9 @@ export default {
     changeYear () {
       this.$emit('update:cardYear', this.cardYearModel)
     },
-    changeCvv () {
+    changeCvv (e) {
+      this.cardCvvModel = e.target.value
       this.$emit('update:cardCvv', this.cardCvvModel)
-    },
-    focusField (field) {
-      console.log(field)
     }
   }
 }
