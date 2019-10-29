@@ -216,7 +216,7 @@ export default {
       re = new RegExp('^9792')
       if (number.match(re) != null) return 'troy'
 
-      return 'visa' // default type
+      return '' // default type
     }
   },
   methods: {
