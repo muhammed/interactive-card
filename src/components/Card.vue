@@ -47,7 +47,7 @@
                   class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
                   v-else
-                  :key="currentPlaceholder"
+                  :key="currentPlaceholder + 1"
                 >{{n}}</div>
               </transition>
             </span>
