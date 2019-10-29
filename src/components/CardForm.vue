@@ -4,29 +4,33 @@
       <Card
         :amexCardMask="amexCardMask"
         :defaultCardMask="defaultCardMask"
-        :cardNumber="cardNumber"
+        :cardNumber="cardNumberModel"
         :cardName="cardName"
         :cardMonth="cardMonth"
         :cardYear="cardYear"
         :cardCvv="cardCvv"
         :fields="fields"
-        isCardNumberMasked
+        :isCardNumberMasked="isCardNumberMasked"
       />
     </div>
     <div class="card-form__inner">
       <div class="card-input">
-        <label for="cardNumber" class="card-input__label">Card Number {{cardNumberDummy}}</label>
+        <label for="cardNumber" class="card-input__label">Card Number</label>
         <input
-          type="text"
+          type="tel"
           :id="fields.cardNumber"
-          v-mask="generateCardNumberMask"
           @input="changeNumber"
+          @focus="focusCardNumber"
+          @blur="blurCardNumber"
           class="card-input__input"
           :value="cardNumberModel"
+          maxlength="19"
           data-card-field
           autocomplete="off"
         />
+        <div class="card-input__eye"></div>
       </div>
+      <button @click="toggleMask">toggle mask</button>
       <div class="card-input">
         <label for="cardName" class="card-input__label">Card Name</label>
         <input
@@ -81,7 +85,7 @@
             <input
               type="tel"
               class="card-input__input"
-              v-mask="'####'"
+              v-number-only
               :id="fields.cardCvv"
               maxlength="4"
               :value="cardCvvModel"
@@ -105,6 +109,18 @@ export default {
   name: 'CardForm',
   directives: {
     'mask': mask,
+    'number-only': {
+      bind (el) {
+        function checkValue (event) {
+          event.target.value = event.target.value.replace(/[^0-9]/g, '')
+          if (event.charCode >= 48 && event.charCode <= 57) {
+            return true
+          }
+          event.preventDefault()
+        }
+        el.addEventListener('keypress', checkValue)
+      }
+    },
     'letter-only': {
       bind (el) {
         function checkValue (event) {
@@ -145,7 +161,8 @@ export default {
         cardYear: 'cardYear',
         cardCvv: 'cardCvv'
       },
-      cardNumberDummy: ''
+      isCardNumberMasked: true,
+      mainCardNumber: this.cardNumber
     }
   },
   mounted () {
@@ -198,7 +215,18 @@ export default {
       this.$emit('update:cardName', this.cardNameModel)
     },
     changeNumber (e) {
+      // this.cardNumberModel = e.target.value.replace(/[^0-9]/g, '').replace(/\W/gi, '').replace(/(.{4})/g, '$1 ').trim()
       this.cardNumberModel = e.target.value
+      let formattedCardNumber = this.cardNumberModel.replace(/[^\d]/g, '')
+      formattedCardNumber = formattedCardNumber.substring(0, 16)
+      let cardNumberSections = formattedCardNumber.match(/\d{1,4}/g)
+      if (cardNumberSections !== null) {
+        formattedCardNumber = cardNumberSections.join(' ')
+      }
+      if (this.cardNumberModel !== formattedCardNumber) {
+        this.cardNumberModel = formattedCardNumber
+      }
+      e.preventDefault()
       this.$emit('update:cardNumber', this.cardNumberModel)
     },
     changeMonth () {
@@ -230,6 +258,35 @@ export default {
       }
       if (sum % 10 !== 0) {
         alert('invaild card number')
+      }
+    },
+    blurCardNumber () {
+      if (this.isCardNumberMasked) {
+        this.maskCardNumber()
+      }
+    },
+    maskCardNumber () {
+      this.mainCardNumber = this.cardNumberModel
+      let arr = this.cardNumberModel.split('')
+      arr.forEach((element, index) => {
+        if (index > 4 && index < 14 && element.trim() !== '') {
+          arr[index] = '*'
+        }
+      })
+      this.cardNumberModel = arr.join('')
+    },
+    unMaskCardNumber () {
+      this.cardNumberModel = this.mainCardNumber
+    },
+    focusCardNumber () {
+      this.unMaskCardNumber()
+    },
+    toggleMask () {
+      this.isCardNumberMasked = !this.isCardNumberMasked
+      if (this.isCardNumberMasked) {
+        this.maskCardNumber()
+      } else {
+        this.unMaskCardNumber()
       }
     }
   }

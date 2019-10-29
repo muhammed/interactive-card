@@ -36,15 +36,13 @@
             <span v-for="(n, $index) in amexCardMask" :key="$index">
               <transition name="slide-fade-up">
                 <!-- TODO this is temporary. to be optimized -->
+                <div class="card-item__numberItem" v-if="getIsNumberMasked($index, n)">*</div>
                 <div
                   class="card-item__numberItem"
-                  v-if="$index > 4 && $index < 14 && cardNumber.length > $index && n.trim() !== '' && isCardNumberMasked"
-                >*</div>
-                <div class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
-                  :key="$index" v-else-if="cardNumber.length > $index">
-                  {{cardNumber[$index]}}
-                </div>
+                  :key="$index"
+                  v-else-if="cardNumber.length > $index"
+                >{{cardNumber[$index]}}</div>
                 <div
                   class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
@@ -58,15 +56,13 @@
           <template v-else>
             <span v-for="(n, $index) in defaultCardMask" :key="$index">
               <transition name="slide-fade-up">
+                <div class="card-item__numberItem" v-if="getIsNumberMasked($index, n)">*</div>
                 <div
                   class="card-item__numberItem"
-                  v-if="$index > 4 && $index < 15 && cardNumber.length > $index && n.trim() !== '' && isCardNumberMasked"
-                >*</div>
-                <div class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
-                  :key="$index" v-else-if="cardNumber.length > $index">
-                  {{cardNumber[$index]}}
-                </div>
+                  :key="$index"
+                  v-else-if="cardNumber.length > $index"
+                >{{cardNumber[$index]}}</div>
                 <div
                   class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
@@ -123,9 +119,7 @@
       <div class="card-item__cvv">
         <div class="card-item__cvvTitle">CVV</div>
         <div class="card-item__cvvBand">
-          <span v-for="(n, $index) in cardCvv" :key="$index">
-            *
-          </span>
+          <span v-for="(n, $index) in cardCvv" :key="$index">*</span>
         </div>
         <div class="card-item__type">
           <img
@@ -227,6 +221,9 @@ export default {
         height: `${target.offsetHeight}px`,
         transform: `translateX(${target.offsetLeft}px) translateY(${target.offsetTop}px)`
       } : null
+    },
+    getIsNumberMasked (index, n) {
+      return index > 4 && index < 14 && this.cardNumber.length > index && n.trim() !== '' && this.isCardNumberMasked
     }
   }
 }
