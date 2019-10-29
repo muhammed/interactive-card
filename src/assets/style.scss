@@ -565,9 +565,25 @@ body {
     padding: 0;
     background: none;
     display: inline-flex;
-    border: 3px solid currentColor;
+    border: 2px solid currentColor;
     box-shadow: none;
     transition: all .3s ease-in-out;
+
+    &:before {
+      content: '';
+      position: absolute;
+      background: white;
+      width: 0.35em;
+      height: 0.35em;
+      top: 6px;
+      left: 6px;
+      z-index: 2;
+      border-radius: 50%;
+      transform: scale(.1);
+      opacity: 0;
+      transition: all .3s ease-in-out;
+      transition-delay: .1s;
+    }
 
     &:after {
       content: '';
@@ -575,8 +591,8 @@ body {
       top: 3px;
       left: 3px;
       background: currentColor;
-      width: 0.5em;
-      height: 0.5em;
+      width: 0.6em;
+      height: 0.6em;
       border-radius: 50%;
       transform: scale(.1);
       opacity: 0;
@@ -588,9 +604,11 @@ body {
       opacity: 1;
     }
 
-    &.-active:after {
-      transform: scale(1);
-      opacity: 1;
+    &.-active {
+      &::before, &::after {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     &:disabled {
