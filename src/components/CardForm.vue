@@ -34,6 +34,7 @@
           class="card-input__eye"
           :class="{ '-active' : !isCardNumberMasked }"
           title="Show/Hide card number"
+          tabindex="-1"
           :disabled="cardNumberModel === ''"
           @click="toggleMask"
         ></button>
