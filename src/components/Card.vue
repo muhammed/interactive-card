@@ -56,7 +56,7 @@
           </template>
 
           <template v-else>
-            <span v-for="(n, $index) in otherCardMask" :key="$index">
+            <span v-for="(n, $index) in defaultCardMask" :key="$index">
               <transition name="slide-fade-up">
                 <div
                   class="card-item__numberItem"
@@ -144,7 +144,7 @@ export default {
   name: 'Card',
   props: {
     amexCardMask: String,
-    otherCardMask: String,
+    defaultCardMask: String,
     cardNumber: [String, Number],
     cardName: String,
     cardMonth: [String, Number],
