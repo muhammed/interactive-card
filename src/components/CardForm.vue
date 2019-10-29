@@ -24,7 +24,7 @@
           @blur="blurCardNumber"
           class="card-input__input"
           :value="cardNumberModel"
-          maxlength="19"
+          :maxlength="cardNumberMaxLength"
           data-card-field
           autocomplete="off"
         />
@@ -103,12 +103,10 @@
 </template>
 
 <script>
-import { mask } from 'vue-the-mask'
 import Card from '@/components/Card'
 export default {
   name: 'CardForm',
   directives: {
-    'mask': mask,
     'number-only': {
       bind (el) {
         function checkValue (event) {
@@ -162,7 +160,8 @@ export default {
         cardCvv: 'cardCvv'
       },
       isCardNumberMasked: true,
-      mainCardNumber: this.cardNumber
+      mainCardNumber: this.cardNumber,
+      cardNumberMaxLength: 19
     }
   },
   mounted () {
@@ -215,18 +214,19 @@ export default {
       this.$emit('update:cardName', this.cardNameModel)
     },
     changeNumber (e) {
-      // this.cardNumberModel = e.target.value.replace(/[^0-9]/g, '').replace(/\W/gi, '').replace(/(.{4})/g, '$1 ').trim()
       this.cardNumberModel = e.target.value
-      let formattedCardNumber = this.cardNumberModel.replace(/[^\d]/g, '')
-      formattedCardNumber = formattedCardNumber.substring(0, 16)
-      let cardNumberSections = formattedCardNumber.match(/\d{1,4}/g)
-      if (cardNumberSections !== null) {
-        formattedCardNumber = cardNumberSections.join(' ')
+      let value = this.cardNumberModel.replace(/\D/g, '')
+      // american express, 15 digits
+      if ((/^3[47]\d{0,13}$/).test(value)) {
+        this.cardNumberModel = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
+        this.cardNumberMaxLength = 17
+      } else if ((/^3(?:0[0-5]|[68]\d)\d{0,11}$/).test(value)) { // diner's club, 14 digits
+        this.cardNumberModel = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
+        this.cardNumberMaxLength = 16
+      } else if ((/^\d{0,16}$/).test(value)) { // regular cc number, 16 digits
+        this.cardNumberModel = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{4})/, '$1 $2 ').replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ')
+        this.cardNumberMaxLength = 19
       }
-      if (this.cardNumberModel !== formattedCardNumber) {
-        this.cardNumberModel = formattedCardNumber
-      }
-      e.preventDefault()
       this.$emit('update:cardNumber', this.cardNumberModel)
     },
     changeMonth () {
