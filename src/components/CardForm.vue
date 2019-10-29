@@ -30,9 +30,14 @@
           data-card-field
           autocomplete="off"
         />
-        <div class="card-input__eye"></div>
+        <button
+          class="card-input__eye"
+          :class="{ '-active' : !isCardNumberMasked }"
+          title="Show/Hide card number"
+          :disabled="cardNumberModel === ''"
+          @click="toggleMask"
+        ></button>
       </div>
-      <button @click="toggleMask">toggle mask</button>
       <div class="card-input">
         <label for="cardName" class="card-input__label">Card Name</label>
         <input
