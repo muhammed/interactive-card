@@ -210,11 +210,6 @@ export default {
     changeCvv (e) {
       this.cardCvvModel = e.target.value
       this.$emit('update:cardCvv', this.cardCvvModel)
-<<<<<<< HEAD
-=======
-    },
-    focusField (field) {
-      console.log(field)
     },
     invaildCard () {
       let number = this.cardNumber
@@ -236,7 +231,6 @@ export default {
       if (sum % 10 !== 0) {
         alert('invaild card number')
       }
->>>>>>> fa193a33d208c44546972ccb2781c5e69b7a1895
     }
   }
 }
