@@ -11,6 +11,8 @@
         :cardCvv="cardCvv"
         :fields="fields"
         :isCardNumberMasked="isCardNumberMasked"
+        :randomBackgrounds="randomBackgrounds"
+        :backgroundImage="backgroundImage"
       />
     </div>
     <div class="card-form__inner">
@@ -136,7 +138,12 @@ export default {
     cardName: String,
     cardMonth: [String, Number],
     cardYear: [String, Number],
-    cardCvv: [String, Number]
+    cardCvv: [String, Number],
+    backgroundImage: [String, Object],
+    randomBackgrounds: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     Card

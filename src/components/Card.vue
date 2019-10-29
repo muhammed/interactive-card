@@ -9,7 +9,8 @@
       ></div>
       <div class="card-item__cover">
         <img
-          :src="'https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/' + currentCardBackground + '.jpeg'"
+          v-if="currentCardBackground"
+          :src="currentCardBackground"
           class="card-item__bg"
         />
       </div>
@@ -35,7 +36,6 @@
           <template v-if="cardType === 'amex'">
             <span v-for="(n, $index) in amexCardMask" :key="$index">
               <transition name="slide-fade-up">
-                <!-- TODO this is temporary. to be optimized -->
                 <div class="card-item__numberItem" v-if="getIsNumberMasked($index, n)">*</div>
                 <div
                   class="card-item__numberItem"
@@ -111,7 +111,8 @@
     <div class="card-item__side -back">
       <div class="card-item__cover">
         <img
-          :src="'https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/' + currentCardBackground + '.jpeg'"
+          v-if="currentCardBackground"
+          :src="currentCardBackground"
           class="card-item__bg"
         />
       </div>
@@ -145,11 +146,15 @@ export default {
     cardYear: [String, Number],
     cardCvv: [String, Number],
     fields: Object,
-    isCardNumberMasked: Boolean
+    isCardNumberMasked: Boolean,
+    randomBackgrounds: {
+      type: Boolean,
+      default: true
+    },
+    backgroundImage: [String, Object]
   },
   data () {
     return {
-      currentCardBackground: Math.floor(Math.random() * 25 + 1),
       focusElementStyle: null,
       currentFocus: null,
       isFocused: false,
@@ -211,6 +216,16 @@ export default {
       if (number.match(re) != null) return 'troy'
 
       return '' // default type
+    },
+    currentCardBackground () {
+      if (this.randomBackgrounds && !this.backgroundImage) { // TODO will be optimized
+        let random = Math.floor(Math.random() * 25 + 1)
+        return `https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/${random}.jpeg`
+      } else if (this.backgroundImage) {
+        return this.backgroundImage
+      } else {
+        return null
+      }
     }
   },
   methods: {
