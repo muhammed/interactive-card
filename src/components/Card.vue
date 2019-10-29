@@ -35,9 +35,10 @@
           <template v-if="cardType === 'amex'">
             <span v-for="(n, $index) in amexCardMask" :key="$index">
               <transition name="slide-fade-up">
+                <!-- TODO this is temporary. to be optimized -->
                 <div
                   class="card-item__numberItem"
-                  v-if="$index > 4 && $index < 14 && cardNumber.length > $index && n.trim() !== ''"
+                  v-if="$index > 4 && $index < 14 && cardNumber.length > $index && n.trim() !== '' && isCardNumberMasked"
                 >*</div>
                 <div class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
@@ -59,7 +60,7 @@
               <transition name="slide-fade-up">
                 <div
                   class="card-item__numberItem"
-                  v-if="$index > 4 && $index < 15 && cardNumber.length > $index && n.trim() !== ''"
+                  v-if="$index > 4 && $index < 15 && cardNumber.length > $index && n.trim() !== '' && isCardNumberMasked"
                 >*</div>
                 <div class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
@@ -149,7 +150,8 @@ export default {
     cardMonth: [String, Number],
     cardYear: [String, Number],
     cardCvv: [String, Number],
-    fields: Object
+    fields: Object,
+    isCardNumberMasked: Boolean
   },
   data () {
     return {
