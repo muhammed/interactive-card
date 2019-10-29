@@ -33,41 +33,21 @@
           </div>
         </div>
         <label :for="fields.cardNumber" class="card-item__number" :ref="fields.cardNumber">
-          <template v-if="cardType === 'amex'">
-            <span v-for="(n, $index) in amexCardMask" :key="$index">
+          <template>
+            <span v-for="(n, $index) in currentPlaceholder" :key="$index">
               <transition name="slide-fade-up">
                 <div class="card-item__numberItem" v-if="getIsNumberMasked($index, n)">*</div>
                 <div
                   class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
-                  :key="$index"
+                  :key="currentPlaceholder"
                   v-else-if="cardNumber.length > $index"
                 >{{cardNumber[$index]}}</div>
                 <div
                   class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
                   v-else
-                  :key="$index + 1"
-                >{{n}}</div>
-              </transition>
-            </span>
-          </template>
-
-          <template v-else>
-            <span v-for="(n, $index) in defaultCardMask" :key="$index">
-              <transition name="slide-fade-up">
-                <div class="card-item__numberItem" v-if="getIsNumberMasked($index, n)">*</div>
-                <div
-                  class="card-item__numberItem"
-                  :class="{ '-active' : n.trim() === '' }"
-                  :key="$index"
-                  v-else-if="cardNumber.length > $index"
-                >{{cardNumber[$index]}}</div>
-                <div
-                  class="card-item__numberItem"
-                  :class="{ '-active' : n.trim() === '' }"
-                  v-else
-                  :key="$index + 1"
+                  :key="currentPlaceholder"
                 >{{n}}</div>
               </transition>
             </span>
@@ -138,8 +118,6 @@
 export default {
   name: 'Card',
   props: {
-    amexCardMask: String,
-    defaultCardMask: String,
     cardNumber: [String, Number],
     cardName: String,
     cardMonth: [String, Number],
@@ -158,7 +136,11 @@ export default {
       focusElementStyle: null,
       currentFocus: null,
       isFocused: false,
-      isCardFlipped: false
+      isCardFlipped: false,
+      amexCardPlaceholder: '#### ###### #####',
+      dinersCardPlaceholder: '#### ###### ####',
+      defaultCardPlaceholder: '#### #### #### ####',
+      currentPlaceholder: ''
     }
   },
   watch: {
@@ -168,9 +150,17 @@ export default {
       } else {
         this.focusElementStyle = null
       }
+    },
+    cardType () {
+      this.changePlaceholder()
+    },
+    cardNumber () {
+      this.changeFocus()
     }
   },
   mounted () {
+    this.changePlaceholder()
+
     let self = this
     let fields = document.querySelectorAll('[data-card-field]')
     fields.forEach(element => {
@@ -215,6 +205,9 @@ export default {
       re = new RegExp('^9792')
       if (number.match(re) != null) return 'troy'
 
+      re = new RegExp('^3(?:0([0-5]|9)|[689]\\d?)\\d{0,11}')
+      if (number.match(re) != null) return 'dinersclub'
+
       return '' // default type
     },
     currentCardBackground () {
@@ -239,11 +232,16 @@ export default {
     },
     getIsNumberMasked (index, n) {
       return index > 4 && index < 14 && this.cardNumber.length > index && n.trim() !== '' && this.isCardNumberMasked
+    },
+    changePlaceholder () {
+      if (this.cardType === 'amex') {
+        this.currentPlaceholder = this.amexCardPlaceholder
+      } else if (this.cardType === 'dinersclub') {
+        this.currentPlaceholder = this.dinersCardPlaceholder
+      } else {
+        this.currentPlaceholder = this.defaultCardPlaceholder
+      }
     }
   }
 }
 </script>
-
-<style scoped lang="scss">
-
-</style>

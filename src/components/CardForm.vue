@@ -2,8 +2,6 @@
   <div class="card-form">
     <div class="card-list">
       <Card
-        :amexCardMask="amexCardMask"
-        :defaultCardMask="defaultCardMask"
         :cardNumber="cardNumberModel"
         :cardName="cardName"
         :cardMonth="cardMonth"
@@ -162,9 +160,6 @@ export default {
       cardYearModel: this.cardYear,
       cardCvvModel: this.cardCvv,
       minCardYear: new Date().getFullYear(),
-      amexCardMask: '#### ###### #####',
-      defaultCardMask: '#### #### #### ####',
-      cardNumberTemp: '',
       fields: {
         cardNumber: 'cardNumber',
         cardName: 'cardName',
@@ -177,35 +172,7 @@ export default {
       cardNumberMaxLength: 19
     }
   },
-  mounted () {
-    this.cardNumberTemp = this.defaultCardMask
-  },
   computed: {
-    getCardType () {
-      let number = this.cardNumber
-      let re = new RegExp('^4')
-      if (number.match(re) != null) return 'visa'
-
-      re = new RegExp('^(34|37)')
-      if (number.match(re) != null) return 'amex'
-
-      re = new RegExp('^5[1-5]')
-      if (number.match(re) != null) return 'mastercard'
-
-      re = new RegExp('^6011')
-      if (number.match(re) != null) return 'discover'
-
-      re = new RegExp('^62')
-      if (number.match(re) != null) return 'unionpay'
-
-      re = new RegExp('^9792')
-      if (number.match(re) != null) return 'troy'
-
-      return '' // default type
-    },
-    generateCardNumberMask () {
-      return this.getCardType === 'amex' ? this.amexCardMask : this.defaultCardMask
-    },
     minCardMonth () {
       if (this.cardYear === this.minCardYear) return new Date().getMonth() + 1
       return 1
@@ -217,6 +184,9 @@ export default {
         this.cardMonth = ''
       }
     }
+  },
+  mounted () {
+    this.maskCardNumber()
   },
   methods: {
     generateMonthValue (n) {
