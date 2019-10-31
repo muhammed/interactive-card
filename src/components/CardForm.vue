@@ -134,7 +134,18 @@ export default {
     }
   },
   props: {
-    formData: Object,
+    formData: {
+      type: Object,
+      default: () => {
+        return {
+          cardName: '',
+          cardNumber: '',
+          cardMonth: '',
+          cardYear: '',
+          cardCvv: ''
+        }
+      }
+    },
     backgroundImage: [String, Object],
     randomBackgrounds: {
       type: Boolean,
