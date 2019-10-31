@@ -41,8 +41,8 @@
                   class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
                   :key="currentPlaceholder"
-                  v-else-if="cardNumber.length > $index"
-                >{{cardNumber[$index]}}</div>
+                  v-else-if="labels.cardNumber.length > $index"
+                >{{labels.cardNumber[$index]}}</div>
                 <div
                   class="card-item__numberItem"
                   :class="{ '-active' : n.trim() === '' }"
@@ -57,11 +57,11 @@
           <label :for="fields.cardName" class="card-item__info" :ref="fields.cardName">
             <div class="card-item__holder">Card Holder</div>
             <transition name="slide-fade-up">
-              <div class="card-item__name" v-if="cardName.length" key="1">
+              <div class="card-item__name" v-if="labels.cardName.length" key="1">
                 <transition-group name="slide-fade-right">
                   <span
                     class="card-item__nameItem"
-                    v-for="(n, $index) in cardName.replace(/\s\s+/g, ' ')"
+                    v-for="(n, $index) in labels.cardName.replace(/\s\s+/g, ' ')"
                     :key="$index + 1"
                   >{{n}}</span>
                 </transition-group>
@@ -73,14 +73,14 @@
             <label :for="fields.cardMonth" class="card-item__dateTitle">Expires</label>
             <label :for="fields.cardMonth" class="card-item__dateItem">
               <transition name="slide-fade-up">
-                <span v-if="cardMonth" :key="cardMonth">{{cardMonth}}</span>
+                <span v-if="labels.cardMonth" :key="labels.cardMonth">{{labels.cardMonth}}</span>
                 <span v-else key="2">MM</span>
               </transition>
             </label>
             /
             <label for="cardYear" class="card-item__dateItem">
               <transition name="slide-fade-up">
-                <span v-if="cardYear" :key="cardYear">{{String(cardYear).slice(2,4)}}</span>
+                <span v-if="labels.cardYear" :key="labels.cardYear">{{String(labels.cardYear).slice(2,4)}}</span>
                 <span v-else key="2">YY</span>
               </transition>
             </label>
@@ -100,7 +100,7 @@
       <div class="card-item__cvv">
         <div class="card-item__cvvTitle">CVV</div>
         <div class="card-item__cvvBand">
-          <span v-for="(n, $index) in cardCvv" :key="$index">*</span>
+          <span v-for="(n, $index) in labels.cardCvv" :key="$index">*</span>
         </div>
         <div class="card-item__type">
           <img
@@ -118,11 +118,7 @@
 export default {
   name: 'Card',
   props: {
-    cardNumber: [String, Number],
-    cardName: String,
-    cardMonth: [String, Number],
-    cardYear: [String, Number],
-    cardCvv: [String, Number],
+    labels: Object,
     fields: Object,
     isCardNumberMasked: Boolean,
     randomBackgrounds: {
@@ -183,7 +179,7 @@ export default {
   },
   computed: {
     cardType () {
-      let number = this.cardNumber
+      let number = this.labels.cardNumber
       let re = new RegExp('^4')
       if (number.match(re) != null) return 'visa'
 
@@ -228,7 +224,7 @@ export default {
       } : null
     },
     getIsNumberMasked (index, n) {
-      return index > 4 && index < 14 && this.cardNumber.length > index && n.trim() !== '' && this.isCardNumberMasked
+      return index > 4 && index < 14 && this.labels.cardNumber.length > index && n.trim() !== '' && this.isCardNumberMasked
     },
     changePlaceholder () {
       if (this.cardType === 'amex') {

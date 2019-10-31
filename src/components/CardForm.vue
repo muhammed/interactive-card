@@ -2,12 +2,8 @@
   <div class="card-form">
     <div class="card-list">
       <Card
-        :cardNumber="cardNumberModel"
-        :cardName="cardName"
-        :cardMonth="cardMonth"
-        :cardYear="cardYear"
-        :cardCvv="cardCvv"
         :fields="fields"
+        :labels="formData"
         :isCardNumberMasked="isCardNumberMasked"
         :randomBackgrounds="randomBackgrounds"
         :backgroundImage="backgroundImage"
@@ -23,7 +19,7 @@
           @focus="focusCardNumber"
           @blur="blurCardNumber"
           class="card-input__input"
-          :value="cardNumberModel"
+          :value="formData.cardNumber"
           :maxlength="cardNumberMaxLength"
           data-card-field
           autocomplete="off"
@@ -33,7 +29,7 @@
           :class="{ '-active' : !isCardNumberMasked }"
           title="Show/Hide card number"
           tabindex="-1"
-          :disabled="cardNumberModel === ''"
+          :disabled="formData.cardNumber === ''"
           @click="toggleMask"
         ></button>
       </div>
@@ -45,7 +41,7 @@
           v-letter-only
           @input="changeName"
           class="card-input__input"
-          :value="cardNameModel"
+          :value="formData.cardName"
           data-card-field
           autocomplete="off"
         />
@@ -57,7 +53,7 @@
             <select
               class="card-input__input -select"
               :id="fields.cardMonth"
-              v-model="cardMonthModel"
+              v-model="formData.cardMonth"
               @change="changeMonth"
               data-card-field
             >
@@ -72,7 +68,7 @@
             <select
               class="card-input__input -select"
               :id="fields.cardYear"
-              v-model="cardYearModel"
+              v-model="formData.cardYear"
               @change="changeYear"
               data-card-field
             >
@@ -94,7 +90,7 @@
               v-number-only
               :id="fields.cardCvv"
               maxlength="4"
-              :value="cardCvvModel"
+              :value="formData.cardCvv"
               @input="changeCvv"
               data-card-field
               autocomplete="off"
@@ -138,11 +134,7 @@ export default {
     }
   },
   props: {
-    cardNumber: [String, Number],
-    cardName: String,
-    cardMonth: [String, Number],
-    cardYear: [String, Number],
-    cardCvv: [String, Number],
+    formData: Object,
     backgroundImage: [String, Object],
     randomBackgrounds: {
       type: Boolean,
@@ -154,19 +146,14 @@ export default {
   },
   data () {
     return {
-      cardNumberModel: this.cardNumber,
-      cardNameModel: this.cardName,
-      cardMonthModel: this.cardMonth,
-      cardYearModel: this.cardYear,
-      cardCvvModel: this.cardCvv,
-      minCardYear: new Date().getFullYear(),
       fields: {
-        cardNumber: 'cardNumber',
-        cardName: 'cardName',
-        cardMonth: 'cardMonth',
-        cardYear: 'cardYear',
-        cardCvv: 'cardCvv'
+        cardNumber: 'v-card-number',
+        cardName: 'v-card-name',
+        cardMonth: 'v-card-month',
+        cardYear: 'v-card-year',
+        cardCvv: 'v-card-cvv'
       },
+      minCardYear: new Date().getFullYear(),
       isCardNumberMasked: true,
       mainCardNumber: this.cardNumber,
       cardNumberMaxLength: 19
@@ -174,14 +161,14 @@ export default {
   },
   computed: {
     minCardMonth () {
-      if (this.cardYear === this.minCardYear) return new Date().getMonth() + 1
+      if (this.formData.cardYear === this.minCardYear) return new Date().getMonth() + 1
       return 1
     }
   },
   watch: {
     cardYear () {
-      if (this.cardMonth < this.minCardMonth) {
-        this.cardMonth = ''
+      if (this.formData.cardMonth < this.minCardMonth) {
+        this.formData.cardMonth = ''
       }
     }
   },
@@ -193,37 +180,37 @@ export default {
       return n < 10 ? `0${n}` : n
     },
     changeName (e) {
-      this.cardNameModel = e.target.value
-      this.$emit('update:cardName', this.cardNameModel)
+      this.formData.cardName = e.target.value
+      this.$emit('input-card-name', this.formData.cardName)
     },
     changeNumber (e) {
-      this.cardNumberModel = e.target.value
-      let value = this.cardNumberModel.replace(/\D/g, '')
+      this.formData.cardNumber = e.target.value
+      let value = this.formData.cardNumber.replace(/\D/g, '')
       // american express, 15 digits
       if ((/^3[47]\d{0,13}$/).test(value)) {
-        this.cardNumberModel = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
+        this.formData.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
         this.cardNumberMaxLength = 17
       } else if ((/^3(?:0[0-5]|[68]\d)\d{0,11}$/).test(value)) { // diner's club, 14 digits
-        this.cardNumberModel = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
+        this.formData.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
         this.cardNumberMaxLength = 16
       } else if ((/^\d{0,16}$/).test(value)) { // regular cc number, 16 digits
-        this.cardNumberModel = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{4})/, '$1 $2 ').replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ')
+        this.formData.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{4})/, '$1 $2 ').replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ')
         this.cardNumberMaxLength = 19
       }
-      this.$emit('update:cardNumber', this.cardNumberModel)
+      this.$emit('input-card-number', this.formData.cardNumber)
     },
     changeMonth () {
-      this.$emit('update:cardMonth', this.cardMonthModel)
+      this.$emit('input-card-month', this.formData.cardMonth)
     },
     changeYear () {
-      this.$emit('update:cardYear', this.cardYearModel)
+      this.$emit('input-card-year', this.formData.cardYear)
     },
     changeCvv (e) {
-      this.cardCvvModel = e.target.value
-      this.$emit('update:cardCvv', this.cardCvvModel)
+      this.formData.cardCvv = e.target.value
+      this.$emit('input-card-cvv', this.formData.cardCvv)
     },
     invaildCard () {
-      let number = this.cardNumber
+      let number = this.formData.cardNumber
       let sum = 0
       let isOdd = true
       for (let i = number.length - 1; i >= 0; i--) {
@@ -249,17 +236,17 @@ export default {
       }
     },
     maskCardNumber () {
-      this.mainCardNumber = this.cardNumberModel
-      let arr = this.cardNumberModel.split('')
+      this.mainCardNumber = this.formData.cardNumber
+      let arr = this.formData.cardNumber.split('')
       arr.forEach((element, index) => {
         if (index > 4 && index < 14 && element.trim() !== '') {
           arr[index] = '*'
         }
       })
-      this.cardNumberModel = arr.join('')
+      this.formData.cardNumber = arr.join('')
     },
     unMaskCardNumber () {
-      this.cardNumberModel = this.mainCardNumber
+      this.formData.cardNumber = this.mainCardNumber
     },
     focusCardNumber () {
       this.unMaskCardNumber()
