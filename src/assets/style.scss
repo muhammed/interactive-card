@@ -335,6 +335,7 @@ body {
 
   &__name {
     font-size: 18px;
+    height: 18px;
     line-height: 1;
     white-space: nowrap;
     max-width: 100%;
@@ -343,6 +344,7 @@ body {
     text-transform: uppercase;
     @media screen and (max-width: 480px) {
       font-size: 16px;
+      height: 16px;
     }
   }
   &__nameItem {

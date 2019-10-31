@@ -17,13 +17,13 @@
       <div class="card-item__wrapper">
         <div class="card-item__top">
           <img
-            src="https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/chip.png"
+            src="@/assets/images/chip.png"
             class="card-item__chip"
           />
           <div class="card-item__type">
             <transition name="slide-fade-up">
               <img
-                :src="'https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/' + cardType + '.png'"
+                :src="getCardTypeImgUrl()"
                 v-if="cardType"
                 :key="cardType"
                 alt
@@ -66,7 +66,7 @@
                   >{{n}}</span>
                 </transition-group>
               </div>
-              <div class="card-item__name" v-else key="2">Ad Soyad</div>
+              <div class="card-item__name" v-else key="2"></div>
             </transition>
           </label>
           <div class="card-item__date" ref="cardDate">
@@ -104,7 +104,7 @@
         </div>
         <div class="card-item__type">
           <img
-            :src="'https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/' + cardType + '.png'"
+            :src="getCardTypeImgUrl()"
             v-if="cardType"
             class="card-item__typeImg"
           />
@@ -206,7 +206,7 @@ export default {
     currentCardBackground () {
       if (this.randomBackgrounds && !this.backgroundImage) { // TODO will be optimized
         let random = Math.floor(Math.random() * 25 + 1)
-        return `https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/${random}.jpeg`
+        return require(`@/assets/images/${random}.jpeg`)
       } else if (this.backgroundImage) {
         return this.backgroundImage
       } else {
@@ -237,6 +237,9 @@ export default {
       this.$nextTick(() => {
         this.changeFocus()
       })
+    },
+    getCardTypeImgUrl () {
+      return require(`@/assets/images/${this.cardType}.png`)
     }
   }
 }
