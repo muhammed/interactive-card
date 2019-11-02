@@ -201,6 +201,9 @@ export default {
       re = new RegExp('^3(?:0([0-5]|9)|[689]\\d?)\\d{0,11}')
       if (number.match(re) != null) return 'dinersclub'
 
+      re = new RegExp('^35(2[89]|[3-8])')
+      if (number.match(re) != null) return 'jcb'
+
       return '' // default type
     },
     currentCardBackground () {
