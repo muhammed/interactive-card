@@ -66,7 +66,7 @@
                   >{{n}}</span>
                 </transition-group>
               </div>
-              <div class="card-item__name" v-else key="2"></div>
+              <div class="card-item__name" v-else key="2">Full Name</div>
             </transition>
           </label>
           <div class="card-item__date" ref="cardDate">
