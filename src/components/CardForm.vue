@@ -99,7 +99,7 @@
         </div>
       </div>
 
-      <button class="card-form__button" v-on:click="invaildCard">Submit</button>
+      <button class="card-form__button" v-on:click="invalidCard">Submit</button>
     </div>
   </div>
 </template>
@@ -220,7 +220,7 @@ export default {
       this.formData.cardCvv = e.target.value
       this.$emit('input-card-cvv', this.formData.cardCvv)
     },
-    invaildCard () {
+    invalidCard () {
       let number = this.formData.cardNumber
       let sum = 0
       let isOdd = true
@@ -238,7 +238,7 @@ export default {
         isOdd = !isOdd
       }
       if (sum % 10 !== 0) {
-        alert('invaild card number')
+        alert('invalid card number')
       }
     },
     blurCardNumber () {
