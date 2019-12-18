@@ -22,11 +22,6 @@ npm run serve
 npm run build
 ```
 
-### Run your unit tests
-```bash
-npm run test:unit
-```
-
 ### Lints and fixes files
 ```bash
 npm run lint
