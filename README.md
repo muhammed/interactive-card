@@ -1,36 +1,33 @@
-# vue-interactive-paycard (npm package (for react & react-native either) is coming soon)
+# Vue.js Interactive Paycard (npm package (for react & react-native either) is coming soon)
 
 A fantastic credit card form with smooth and sweet micro-interactions. Includes number formatting, validation and automatic card type detection. Built with vuejs and also fully responsive.
 
-See Live: https://codepen.io/JavaScriptJunkie/pen/YzzNGeR
+See live: https://codepen.io/JavaScriptJunkie/pen/YzzNGeR
 
 ![](demo.gif)
 
 
-## Project setup
-```
+### Project setup
+```bash
 npm install
 ```
 
 ### Compiles and hot-reloads for development
-```
+```bash
 npm run serve
 ```
 
 ### Compiles and minifies for production
-```
+```bash
 npm run build
 ```
 
 ### Run your unit tests
-```
+```bash
 npm run test:unit
 ```
 
 ### Lints and fixes files
-```
+```bash
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
