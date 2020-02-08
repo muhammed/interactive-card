@@ -208,6 +208,12 @@ export default {
         this.formData.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{4})/, '$1 $2 ').replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ')
         this.cardNumberMaxLength = 19
       }
+      // eslint-disable-next-line eqeqeq
+      if (e.inputType == 'deleteContentBackward') {
+        let lastChar = this.formData.cardNumber.substring(this.formData.cardNumber.length, this.formData.cardNumber.length - 1)
+        // eslint-disable-next-line eqeqeq
+        if (lastChar == ' ') { this.formData.cardNumber = this.formData.cardNumber.substring(0, this.formData.cardNumber.length - 1) }
+      }
       this.$emit('input-card-number', this.formData.cardNumber)
     },
     changeMonth () {
