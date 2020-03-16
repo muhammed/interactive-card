@@ -8,6 +8,19 @@ See Live: https://codepen.io/JavaScriptJunkie/pen/YzzNGeR
 
 
 ## Project setup
+
+### Online one-click setup
+
+You can use Gitpod(a free online VS Code-like IDE) for contributing. With a single click it will launch a workspace and automatically:
+
+- clone the vue-interactive-paycard repo.
+- install the dependencies.
+- run `yarn serve`.
+
+so that you can start straight away.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
+
 ```
 npm install
 ```
