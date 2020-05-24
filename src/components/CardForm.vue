@@ -140,6 +140,7 @@ export default {
         return {
           cardName: '',
           cardNumber: '',
+          cardNumberNotMask: '',
           cardMonth: '',
           cardYear: '',
           cardCvv: ''
@@ -227,21 +228,17 @@ export default {
       this.$emit('input-card-cvv', this.formData.cardCvv)
     },
     invaildCard () {
-      let number = this.formData.cardNumber
-      let sum = 0
-      let isOdd = true
-      for (let i = number.length - 1; i >= 0; i--) {
-        let num = number.charAt(i)
-        if (isOdd) {
-          sum += num
-        } else {
-          num = num * 2
-          if (num > 9) {
-            num = num.toString().split('').join('+')
+      let number = this.formData.cardNumberNotMask.replace(/ /g, '')
+      var sum = 0
+      for (var i = 0; i < number.length; i++) {
+        var intVal = parseInt(number.substr(i, 1))
+        if (i % 2 === 0) {
+          intVal *= 2
+          if (intVal > 9) {
+            intVal = 1 + (intVal % 10)
           }
-          sum += num
         }
-        isOdd = !isOdd
+        sum += intVal
       }
       if (sum % 10 !== 0) {
         alert('invaild card number')
@@ -253,6 +250,7 @@ export default {
       }
     },
     maskCardNumber () {
+      this.formData.cardNumberNotMask = this.formData.cardNumber
       this.mainCardNumber = this.formData.cardNumber
       let arr = this.formData.cardNumber.split('')
       arr.forEach((element, index) => {
