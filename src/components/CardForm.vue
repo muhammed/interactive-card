@@ -11,7 +11,7 @@
     </div>
     <div class="card-form__inner">
       <div class="card-input">
-        <label for="cardNumber" class="card-input__label">Card Number</label>
+        <label for="cardNumber" class="card-input__label">{{ $t('cardForm.cardNumber') }}</label>
         <input
           type="tel"
           :id="fields.cardNumber"
@@ -34,7 +34,7 @@
         ></button>
       </div>
       <div class="card-input">
-        <label for="cardName" class="card-input__label">Card Name</label>
+        <label for="cardName" class="card-input__label">{{ $t('cardForm.cardName') }}</label>
         <input
           type="text"
           :id="fields.cardName"
@@ -49,7 +49,7 @@
       <div class="card-form__row">
         <div class="card-form__col">
           <div class="card-form__group">
-            <label for="cardMonth" class="card-input__label">Expiration Date</label>
+            <label for="cardMonth" class="card-input__label">{{ $t('cardForm.expirationDate') }}</label>
             <select
               class="card-input__input -select"
               :id="fields.cardMonth"
@@ -57,7 +57,7 @@
               @change="changeMonth"
               data-card-field
             >
-              <option value disabled selected>Month</option>
+              <option value disabled selected>{{ $t('cardForm.month') }}</option>
               <option
                 v-bind:value="n < 10 ? '0' + n : n"
                 v-for="n in 12"
@@ -72,7 +72,7 @@
               @change="changeYear"
               data-card-field
             >
-              <option value disabled selected>Year</option>
+              <option value disabled selected>{{ $t('cardForm.year') }}</option>
               <option
                 v-bind:value="$index + minCardYear"
                 v-for="(n, $index) in 12"
@@ -83,7 +83,7 @@
         </div>
         <div class="card-form__col -cvv">
           <div class="card-input">
-            <label for="cardCvv" class="card-input__label">CVV</label>
+            <label for="cardCvv" class="card-input__label">{{ $t('cardForm.CVV') }}</label>
             <input
               type="tel"
               class="card-input__input"
@@ -99,7 +99,7 @@
         </div>
       </div>
 
-      <button class="card-form__button" v-on:click="invaildCard">Submit</button>
+      <button class="card-form__button" v-on:click="invaildCard">{{ $t('cardForm.submit') }}</button>
     </div>
   </div>
 </template>
@@ -140,6 +140,7 @@ export default {
         return {
           cardName: '',
           cardNumber: '',
+          cardNumberNotMask: '',
           cardMonth: '',
           cardYear: '',
           cardCvv: ''
@@ -227,24 +228,20 @@ export default {
       this.$emit('input-card-cvv', this.formData.cardCvv)
     },
     invaildCard () {
-      let number = this.formData.cardNumber
-      let sum = 0
-      let isOdd = true
-      for (let i = number.length - 1; i >= 0; i--) {
-        let num = number.charAt(i)
-        if (isOdd) {
-          sum += num
-        } else {
-          num = num * 2
-          if (num > 9) {
-            num = num.toString().split('').join('+')
+      let number = this.formData.cardNumberNotMask.replace(/ /g, '')
+      var sum = 0
+      for (var i = 0; i < number.length; i++) {
+        var intVal = parseInt(number.substr(i, 1))
+        if (i % 2 === 0) {
+          intVal *= 2
+          if (intVal > 9) {
+            intVal = 1 + (intVal % 10)
           }
-          sum += num
         }
-        isOdd = !isOdd
+        sum += intVal
       }
       if (sum % 10 !== 0) {
-        alert('invaild card number')
+        alert(this.$t('cardForm.invalidCardNumber'))
       }
     },
     blurCardNumber () {
@@ -253,6 +250,7 @@ export default {
       }
     },
     maskCardNumber () {
+      this.formData.cardNumberNotMask = this.formData.cardNumber
       this.mainCardNumber = this.formData.cardNumber
       let arr = this.formData.cardNumber.split('')
       arr.forEach((element, index) => {
