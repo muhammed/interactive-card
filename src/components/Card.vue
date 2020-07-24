@@ -32,6 +32,12 @@
             </transition>
           </div>
         </div>
+        <!-- CVV on front of card for Amex -->
+        <div  v-if="cardType === 'amex'">
+            <div class="card-item-cvv-amex">
+                <span v-for="(n, $index) in labels.cardCvv" :key="$index">*</span>
+            </div>
+        </div>
         <label :for="fields.cardNumber" class="card-item__number" :ref="fields.cardNumber">
           <template>
             <span v-for="(n, $index) in currentPlaceholder" :key="$index">
@@ -164,7 +170,7 @@ export default {
         } else {
           this.currentFocus = element.id
         }
-        this.isCardFlipped = element.id === this.fields.cardCvv
+        if (this.cardType !== 'amex') this.isCardFlipped = element.id === this.fields.cardCvv
       })
       element.addEventListener('blur', () => {
         this.isCardFlipped = !element.id === this.fields.cardCvv
