@@ -78,7 +78,7 @@
               </transition>
             </label>
             /
-            <label for="cardYear" class="card-item__dateItem">
+            <label for="v-card-year" class="card-item__dateItem">
               <transition name="slide-fade-up">
                 <span v-if="labels.cardYear" :key="labels.cardYear">{{String(labels.cardYear).slice(2,4)}}</span>
                 <span v-else key="2">{{ $t('card.YY') }}</span>
@@ -121,6 +121,11 @@ export default {
     labels: Object,
     fields: Object,
     isCardNumberMasked: Boolean,
+    isCardFlipped: Boolean,
+    currentFocus: {
+      type: String,
+      default: null
+    },
     randomBackgrounds: {
       type: Boolean,
       default: true
@@ -130,9 +135,6 @@ export default {
   data () {
     return {
       focusElementStyle: null,
-      currentFocus: null,
-      isFocused: false,
-      isCardFlipped: false,
       amexCardPlaceholder: '#### ###### #####',
       dinersCardPlaceholder: '#### ###### ####',
       defaultCardPlaceholder: '#### #### #### ####',
@@ -140,8 +142,8 @@ export default {
     }
   },
   watch: {
-    currentFocus () {
-      if (this.currentFocus) {
+    currentFocus (value) {
+      if (value) {
         this.changeFocus()
       } else {
         this.focusElementStyle = null
@@ -151,31 +153,9 @@ export default {
       this.changePlaceholder()
     }
   },
+
   mounted () {
     this.changePlaceholder()
-
-    let self = this
-    let fields = document.querySelectorAll('[data-card-field]')
-    fields.forEach(element => {
-      element.addEventListener('focus', () => {
-        this.isFocused = true
-        if (element.id === this.fields.cardYear || element.id === this.fields.cardMonth) {
-          this.currentFocus = 'cardDate'
-        } else {
-          this.currentFocus = element.id
-        }
-        this.isCardFlipped = element.id === this.fields.cardCvv
-      })
-      element.addEventListener('blur', () => {
-        this.isCardFlipped = !element.id === this.fields.cardCvv
-        setTimeout(() => {
-          if (!self.isFocused) {
-            self.currentFocus = null
-          }
-        }, 300)
-        self.isFocused = false
-      })
-    })
   },
   computed: {
     cardType () {

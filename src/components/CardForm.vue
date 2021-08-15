@@ -7,9 +7,11 @@
         :isCardNumberMasked="isCardNumberMasked"
         :randomBackgrounds="randomBackgrounds"
         :backgroundImage="backgroundImage"
+        :currentFocus="currentFocus"
+        :isCardFlipped="isCardFlipped"
       />
     </div>
-    <div class="card-form__inner">
+    <div v-if="isPC" class="card-form__inner">
       <div class="card-input">
         <label for="cardNumber" class="card-input__label">{{ $t('cardForm.cardNumber') }}</label>
         <input
@@ -25,6 +27,7 @@
           autocomplete="off"
         />
         <button
+          v-if="showCardMask"
           class="card-input__eye"
           :class="{ '-active' : !isCardNumberMasked }"
           title="Show/Hide card number"
@@ -98,7 +101,6 @@
           </div>
         </div>
       </div>
-
       <button class="card-form__button" v-on:click="invaildCard">{{ $t('cardForm.submit') }}</button>
     </div>
   </div>
@@ -151,6 +153,30 @@ export default {
     randomBackgrounds: {
       type: Boolean,
       default: true
+    },
+    showCardMask: {
+      type: Boolean,
+      default: true
+    },
+    initIsCardNumberMasked: {
+      type: Boolean,
+      default: false
+    },
+    isPC: {
+      type: Boolean,
+      default: true
+    },
+    initDOMFiedsName: {
+      type: Object,
+      default: () => {
+        return {
+          cardNumber: 'v-card-number',
+          cardName: 'v-card-name',
+          cardMonth: 'v-card-month',
+          cardYear: 'v-card-year',
+          cardCvv: 'v-card-cvv'
+        }
+      }
     }
   },
   components: {
@@ -158,17 +184,14 @@ export default {
   },
   data () {
     return {
-      fields: {
-        cardNumber: 'v-card-number',
-        cardName: 'v-card-name',
-        cardMonth: 'v-card-month',
-        cardYear: 'v-card-year',
-        cardCvv: 'v-card-cvv'
-      },
+      isFocused: false,
+      fields: {},
       minCardYear: new Date().getFullYear(),
-      isCardNumberMasked: true,
+      isCardNumberMasked: false,
       mainCardNumber: this.cardNumber,
-      cardNumberMaxLength: 19
+      cardNumberMaxLength: 19,
+      currentFocus: null,
+      isCardFlipped: false
     }
   },
   computed: {
@@ -184,10 +207,60 @@ export default {
       }
     }
   },
+  created () {
+    this._initSettings()
+  },
   mounted () {
     this.maskCardNumber()
+    this._setEventListeners()
   },
   methods: {
+    _setEventListeners () {
+      const fields = document.querySelectorAll('[data-card-field]')
+      this._setFocusListeners(fields)
+      this._setBlurListeners(fields)
+    },
+
+    _setFocusListeners (fields) {
+      fields.forEach(element => {
+        element.addEventListener('focus', () => {
+          this.isFocused = true
+          if (element.id === this.fields.cardYear || element.id === this.fields.cardMonth) {
+            this.currentFocus = 'cardDate'
+          } else {
+            this.currentFocus = element.id
+          }
+          this.isCardFlipped = element.id === this.fields.cardCvv
+        })
+      })
+    },
+
+    _setBlurListeners (fields) {
+      const self = this
+      fields.forEach(element => {
+        element.addEventListener('blur', () => {
+          this.isCardFlipped = !element.id === this.fields.cardCvv
+          setTimeout(() => {
+            if (!self.isFocused) {
+              self.currentFocus = null
+            }
+          }, 300)
+          self.isFocused = false
+        })
+      })
+    },
+
+    _initSettings () {
+      // isCardNumberMasked
+      this.isCardNumberMasked = this.initIsCardNumberMasked
+      // DOM fieldsName
+      this.fields = this.initDOMFiedsName
+    },
+
+    _setCardPropValue (prop, value) {
+      this[prop] = value
+    },
+
     generateMonthValue (n) {
       return n < 10 ? `0${n}` : n
     },
@@ -264,7 +337,8 @@ export default {
       this.formData.cardNumber = this.mainCardNumber
     },
     focusCardNumber () {
-      this.unMaskCardNumber()
+      // blurCardNumber is the same step is right
+      if (this.isCardNumberMasked) this.unMaskCardNumber()
     },
     toggleMask () {
       this.isCardNumberMasked = !this.isCardNumberMasked
